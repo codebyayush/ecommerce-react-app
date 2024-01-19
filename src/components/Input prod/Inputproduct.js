@@ -21,13 +21,12 @@ const priceReducer = (state, action) => {
 };
 
 const optionReducer = (state, action) => {
-    if(action.type === "CATEGORY_INPUT"){
-      return {value: action.value}
-    }
-    else{
-      return {value: ""};
-    }
-}
+  if (action.type === "CATEGORY_INPUT") {
+    return { value: action.value };
+  } else {
+    return { value: "" };
+  }
+};
 
 export const Inputproduct = (props) => {
   const [validateForm, setFormisValid] = useState(false);
@@ -35,13 +34,22 @@ export const Inputproduct = (props) => {
   const uniqueID = Math.random();
 
   const [itemState, dispatchItem] = useReducer(itemReducer, { value: "" });
-  const [priceState, dispatchPrice] = useReducer(priceReducer, {value: "", isValid: false});
-  const [optionState, dispatchOption] = useReducer(optionReducer, {value: ""});
+  const [priceState, dispatchPrice] = useReducer(priceReducer, {
+    value: "",
+    isValid: false,
+  });
+  const [optionState, dispatchOption] = useReducer(optionReducer, {
+    value: "",
+  });
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-  
-    if (itemState.value === "" || priceState.value === "" || optionState.value === "") {
+
+    if (
+      itemState.value === "" ||
+      priceState.value === "" ||
+      optionState.value === ""
+    ) {
       setTrigger(true);
     } else {
       const newItem = {
@@ -49,16 +57,16 @@ export const Inputproduct = (props) => {
         id: uniqueID,
         itemName: itemState.value,
         itemPrice: priceState.value,
-        itemCategory: optionState.value
+        itemCategory: optionState.value,
       };
-  
-      // Add the new item to the state
+
       props.addItem(newItem);
-  
-      // Save the updated item list to local storage
+      
+      // updating the itemList with new item
       const updatedItemList = [...props.newList, newItem];
+      // Save the updated item list to local storage
       localStorage.setItem("itemList", JSON.stringify(updatedItemList));
-   
+
       // Reset form values
       dispatchItem({ type: "ITEM_INPUT", value: "" });
       dispatchPrice({ type: "PRICE_INPUT", value: "", isValid: false });
@@ -69,21 +77,20 @@ export const Inputproduct = (props) => {
   const itemOnChange = (event) => {
     dispatchItem({ type: "ITEM_INPUT", value: event.target.value });
 
-    setFormisValid(priceState.isValid)
+    setFormisValid(priceState.isValid);
   };
 
   const priceOnChange = (event) => {
     dispatchPrice({ type: "PRICE_INPUT", value: event.target.value });
 
-    setFormisValid(priceState.isValid)
-
+    setFormisValid(priceState.isValid);
   };
 
   const categoryOnChange = (event) => {
-      dispatchOption({ type: "CATEGORY_INPUT", value: event.target.value});
+    dispatchOption({ type: "CATEGORY_INPUT", value: event.target.value });
 
-      setFormisValid(priceState.isValid)
-  }
+    setFormisValid(priceState.isValid);
+  };
 
   const validatePrice = () => {
     dispatchPrice({ type: "PRICE_BLUR" });
@@ -126,7 +133,7 @@ export const Inputproduct = (props) => {
               value={priceState.value}
               onChange={priceOnChange}
               onBlur={validatePrice}
-              name="price" 
+              name="price"
               min="0"
               step=".01"
             />
@@ -135,7 +142,12 @@ export const Inputproduct = (props) => {
             <label htmlFor="category" className="form-label">
               Category:
             </label>
-            <select class="form-select" value={optionState.value} onChange={categoryOnChange} aria-label="Default select example">
+            <select
+              class="form-select"
+              value={optionState.value}
+              onChange={categoryOnChange}
+              aria-label="Default select example"
+            >
               <option selected></option>
               <option value="electronics">Electronics</option>
               <option value="grocery">Grocery</option>

@@ -12,7 +12,7 @@ function Cart(props) {
             </li>
             <div className="d-grid gap-4 d-md-block" >
                 <button className="btn btn-outline-danger m-1" onClick={() => props.deleteHandler(props.id)}>Delete Item</button>
-            </div>   
+            </div>
             </li>
         </ul>
     </div>
